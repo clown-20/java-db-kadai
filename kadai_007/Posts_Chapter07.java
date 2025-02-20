@@ -13,15 +13,6 @@ public class Posts_Chapter07 {
         Connection con = null;
         PreparedStatement statement = null;
 
-        // ユーザーリスト
-        String[][] postedData = {
-            { "1003", "2023-02-08", "昨日の夜は哲也でした・・", "13"},
-            { "1002", "2023-02-08", "お疲れ様です！", "12" },
-            { "1003", "2023-02-09", "今日も頑張ります！", "18" },
-            { "1001", "2023-02-09", "無理は禁物ですよ！", "17" },
-            { "1002", "2023-02-10", "明日から連休ですね！", "20" },
-        };
-
         try {
             // データベースに接続
             con = DriverManager.getConnection(
@@ -32,23 +23,19 @@ public class Posts_Chapter07 {
 
             System.out.println("データベース接続成功");
 
-            // SQLクエリを準備
-            String sql = "INSERT INTO posts (user_id, posted_at,post_content,likes) VALUES (?, ?, ?, ?);";
-            statement = con.prepareStatement(sql);
-
-            // リストの1行目から順番に読み込む
-            int rowCnt = 0;
-            for( int i = 0; i < postedData.length; i++ ) {
-                // SQLクエリの「?」部分をリストのデータに置き換え
-                statement.setString(1, postedData[i][0]); // id
-                statement.setString(2, postedData[i][1]); // 投稿日時
-                statement.setString(3, postedData[i][2]); // 投稿内容
-                statement.setString(4, postedData[i][3]); // いいね数
-                rowCnt += statement.executeUpdate();
-            }
-                // SQLクエリを実行（DBMSに送信）
-                System.out.println("レコード追加を実行します");
-                System.out.println( rowCnt + "件のレコードが追加されました");
+          //SQLクエリを準備
+			String sql = "INSERT INTO posts (user_id, posted_at,post_content,likes) VALUES " +
+		            "(1003, '2023-02-08', '昨日の夜は徹夜でした・・', 13), " +
+		            "(1002, '2023-02-08', 'お疲れ様です！', 12), " +
+		            "(1003, '2023-02-09', '今日も頑張ります！', 18), " +
+		            "(1001, '2023-02-09', '無理は禁物ですよ！', 17), " +
+		            "(1002, '2023-02-10', '明日から連休ですね！', 20);";
+			statement = con.prepareStatement(sql);
+			
+          //SQLクエリを実行
+			System.out.println("レコード追加を実行します");
+			int rowCnt = statement.executeUpdate(sql);
+			System.out.println( rowCnt + "件のレコードが追加されました");
             
             
          // 取得するSQLクエリを準備
